@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include "sequencial.h"
 #include "concorrente.h"
+#include "../../lib/timer.h"
 
 #define DEFAULT_NTHREADS    4
 #define DEFAULT_RANGE       10
@@ -67,13 +68,19 @@ int main(int argc, char * argv[]) {
     double integral = 0;
     double * resultado;
     pthread_t tid[NTHREADS];
+    double start_s, end_s, elapsed_s;
+    double start_c, end_c, elapsed_c;
     IDiscreta_args_t ** args_discreta;
     IContinua_args_t ** args_continua;
     IPrecisao_args_t ** args_precisao;
 
+    GET_TIME(start_s);
     printf("sequencial discreta: %lf\n", integral_discreta_sequencial(x, y, intervals+1));
     printf("sequencial continua: %lf\n", integral_continua_sequencial(reference_function, intervals, lower, upper));
     printf("sequencial precisao: %lf\n", integral_continua_com_precisao_sequencial(reference_function, lower, upper, DEFAULT_PRECISION, 4.62));
+    GET_TIME(end_s);
+    elapsed_s = end_s - start_s;
+    printf("Tempo usado para execucao sequencial: %.6lf\n", elapsed_s);
 
     args_discreta = (IDiscreta_args_t **) malloc(sizeof(IDiscreta_args_t *) * NTHREADS);
     if (!args_discreta) {
