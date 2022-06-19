@@ -139,7 +139,7 @@ int main(int argc, char * argv[]) {
 
     GET_TIME(end_c);
     elapsed_c = end_c - start_c;
-    printf("Tempo usado pela funcao concorrente: %.6lf\n", elapsed_c);
+    printf("Tempo usado para execucao concorrente: %.6lf\n", elapsed_c);
     printf("Aceleração: %.6lf\n", elapsed_s / elapsed_c);
 
     free(resultado);
