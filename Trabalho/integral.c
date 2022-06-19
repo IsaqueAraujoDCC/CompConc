@@ -74,6 +74,8 @@ int main(int argc, char * argv[]) {
     IContinua_args_t ** args_continua;
     IPrecisao_args_t ** args_precisao;
 
+    srand(time(NULL));
+
     GET_TIME(start_s);
     printf("sequencial discreta: %lf\n", integral_discreta_sequencial(x, y, intervals+1));
     printf("sequencial continua: %lf\n", integral_continua_sequencial(reference_function, intervals, lower, upper));
@@ -82,6 +84,7 @@ int main(int argc, char * argv[]) {
     elapsed_s = end_s - start_s;
     printf("Tempo usado para execucao sequencial: %.6lf\n", elapsed_s);
 
+    GET_TIME(start_c);
     args_discreta = (IDiscreta_args_t **) malloc(sizeof(IDiscreta_args_t *) * NTHREADS);
     if (!args_discreta) {
         fprintf(stderr, "--ERRO: malloc()\n");
@@ -133,6 +136,11 @@ int main(int argc, char * argv[]) {
         integral += *resultado;
     }
     printf("concorrente precisao: %lf\n", integral);
+
+    GET_TIME(end_c);
+    elapsed_c = end_c - start_c;
+    printf("Tempo usado pela funcao concorrente: %.6lf\n", elapsed_c);
+    printf("Aceleração: %.6lf\n", elapsed_s / elapsed_c);
 
     free(resultado);
     free(args_discreta);
